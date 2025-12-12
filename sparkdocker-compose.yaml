@@ -1,0 +1,70 @@
+version: "3"
+
+services:
+  namenode:
+    image: ramilu90/hadoop-namenode
+    container_name: namenode
+    restart: always
+    ports:
+      - 9870:9870
+      - 9000:9000
+    volumes:
+      - ./resources:/opt/resources
+    env_file:
+      - ./hadoop.env
+
+  datanode:
+    image: ramilu90/hadoop-datanode
+    container_name: datanode
+    restart: always
+    environment:
+      SERVICE_PRECONDITION: "namenode:9870"
+    env_file:
+      - ./hadoop.env
+    depends_on:
+      - namenode
+    ports:
+      - 9864:9864
+
+  resourcemanager:
+    image: ramilu90/hadoop-resourcemanager
+    container_name: resourcemanager
+    restart: always
+    depends_on:
+      - namenode
+      - datanode
+    env_file:
+      - ./hadoop.env
+
+  nodemanager:
+    image: ramilu90/hadoop-nodemanager
+    container_name: nodemanager
+    restart: always
+    depends_on:
+      - resourcemanager
+    env_file:
+      - ./hadoop.env
+
+  spark-master:
+    image: apache/spark:3.5.2
+    container_name: spark-master
+    restart: always
+    volumes:
+      - ./resources:/opt/resources
+    ports:
+      - 8080:8080
+      - 7077:7077
+    depends_on:
+      - namenode
+      - datanode
+
+  spark-worker:
+    image: apache/spark:3.5.2
+    container_name: spark-worker
+    restart: always
+    depends_on:
+      - spark-master
+    environment:
+      - SPARK_MASTER=spark://spark-master:7077
+    ports:
+      - 8081:8081
