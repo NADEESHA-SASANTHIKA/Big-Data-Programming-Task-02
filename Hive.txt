@@ -1,0 +1,79 @@
+CREATE TABLE location (
+    location_id INT,
+    latitude DOUBLE,
+    longitude DOUBLE,
+    elevation DOUBLE,
+    utc_offset_seconds INT,
+    timezone STRING,
+    timezone_abbreviation STRING,
+    city_name STRING
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE;
+
+LOAD DATA INPATH '/user/iitgcpuser/task02/input/locationData.csv' INTO TABLE location;
+
+CREATE TABLE weather (
+    location_id INT,
+    record_date STRING,
+    weather_code INT,
+    temperature_2m_max DOUBLE,
+    temperature_2m_min DOUBLE,
+    temperature_2m_mean DOUBLE,
+    apparent_temperature_max DOUBLE,
+    apparent_temperature_min DOUBLE,
+    apparent_temperature_mean DOUBLE,
+    daylight_duration DOUBLE,
+    sunshine_duration DOUBLE,
+    precipitation_sum DOUBLE,
+    rain_sum DOUBLE,
+    precipitation_hours DOUBLE,
+    wind_speed_10m_max DOUBLE,
+    wind_gusts_10m_max DOUBLE,
+    wind_direction_10m_dominant DOUBLE,
+    shortwave_radiation_sum DOUBLE,
+    et0_fao_evapotranspiration DOUBLE,
+    sunrise STRING,
+    sunset STRING
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+TBLPROPERTIES ("skip.header.line.count"="1");
+
+LOAD DATA INPATH '/user/iitgcpuser/task02/input/weatherData.csv' INTO TABLE weather;
+
+ SELECT
+    >     l.city_name,
+    >     AVG(w.temperature_2m_max) AS avg_max_temp
+    > FROM weather w
+    > JOIN location l
+    >     ON w.location_id = l.location_id
+    > GROUP BY l.city_name
+    > ORDER BY avg_max_temp DESC
+    > LIMIT 10;
+
+
+SET hive.cli.print.header=true;
+
+SELECT
+    l.city_name,
+    CASE 
+        WHEN month IN (9,10,11,12,1,2,3) THEN 'Sep-Mar'
+        WHEN month IN (4,5,6,7,8) THEN 'Apr-Aug'
+    END AS agricultural_season,
+    AVG(w.et0_fao_evapotranspiration) AS avg_evapotranspiration
+FROM (
+    SELECT *,
+           CAST(split(record_date, '/')[1] AS INT) AS month  -- extract month from d/m/yyyy
+    FROM weather
+) w
+JOIN location l
+    ON w.location_id = l.location_id
+GROUP BY l.city_name,
+         CASE 
+            WHEN month IN (9,10,11,12,1,2,3) THEN 'Sep-Mar'
+            WHEN month IN (4,5,6,7,8) THEN 'Apr-Aug'
+         END
+ORDER BY l.city_name, agricultural_season;
