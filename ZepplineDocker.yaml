@@ -8,3 +8,4 @@ services:
     volumes:
       - /home/iitgcpuser/Big-Data-Programming-Task-02/resources:/opt/resources
       - /home/iitgcpuser/Big-Data-Programming-Task-02/scripts:/opt/scripts
+      - /home/iitgcpuser/Big-Data-Programming-Task-02/zeppelin_notebooks:/zeppelin
