@@ -1,14 +1,12 @@
-version: "3.8"
+version: "3"
 
 services:
   zeppelin:
     image: apache/zeppelin:0.9.0
-    container_name: spark-zeppelin
+    container_name: zeppelin
     platform: linux/amd64
+    restart: always
     ports:
       - "8089:8080"
-    restart: always
-    environment:
-      - ZEPPELIN_NOTEBOOK_DIR=/zeppelin/notebook
     volumes:
-      - ./data:/opt/data
+      - /home/iitgcpuser/Big-Data-Programming-Task-02:/opt/resources
