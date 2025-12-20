@@ -11,4 +11,6 @@ services:
       - /home/iitgcpuser/Big-Data-Programming-Task-02/zeppelin_notebooks:/zeppelin/notebook
     environment:
       ZEPPELIN_NOTEBOOK_DIR: "/zeppelin/notebook"
-      ZEPPELIN_ADDR: "0.0.0.0"  
+      ZEPPELIN_ADDR: "0.0.0.0"
+      ZEPPELIN_NOTEBOOK_STORAGE: "org.apache.zeppelin.notebook.repo.VFSNotebookRepo"  # This disables Git and fixes the crash
+      SPARK_HOME: "/opt/spark"  # Optional, but good if connecting to external Spark
