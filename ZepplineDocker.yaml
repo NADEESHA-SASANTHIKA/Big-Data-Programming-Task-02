@@ -12,7 +12,7 @@ services:
       - /home/iitgcpuser/Big-Data-Programming-Task-02/resources:/opt/resources
       - /home/iitgcpuser/Big-Data-Programming-Task-02/scripts:/opt/scripts
       - /home/iitgcpuser/Big-Data-Programming-Task-02/zeppelin_notebooks:/zeppelin/notebook
-      - /home/iitgcpuser/Big-Data-Programming-Task-02/conf:/opt/zeppelin/conf
+      - /home/iitgcpuser/Big-Data-Programming-Task-02:/opt/zeppelin/conf
     environment:
       ZEPPELIN_ADDR: "0.0.0.0"
       SPARK_HOME: "/opt/spark"  # If connecting to your external Spark cluster
