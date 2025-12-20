@@ -10,8 +10,7 @@ services:
     volumes:
       - /home/iitgcpuser/Big-Data-Programming-Task-02/resources:/opt/resources
       - /home/iitgcpuser/Big-Data-Programming-Task-02/scripts:/opt/scripts
-      - /home/iitgcpuser/Big-Data-Programming-Task-02/zeppelin_notebooks:/notebook
+      - /home/iitgcpuser/Big-Data-Programming-Task-02/zeppelin_notebooks:/opt/zeppelin/notebook
     environment:
-      ZEPPELIN_NOTEBOOK_DIR: "/notebook"
       ZEPPELIN_ADDR: "0.0.0.0"
       SPARK_HOME: "/opt/spark"
