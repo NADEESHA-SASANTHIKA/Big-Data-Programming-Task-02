@@ -1,0 +1,15 @@
+FROM apache/zeppelin:0.9.0
+
+USER root
+
+# Create data directory
+RUN mkdir -p /opt/data
+
+# Copy datasets into container
+COPY data/weatherData.csv /opt/data/weatherData.csv
+COPY data/locationData.csv /opt/data/locationData.csv
+
+# Expose Zeppelin port
+EXPOSE 8080
+
+USER zeppelin
