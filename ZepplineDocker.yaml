@@ -11,3 +11,4 @@ services:
       - /home/iitgcpuser/Big-Data-Programming-Task-02/zeppelin_notebooks:/zeppelin/notebook
     environment:
       ZEPPELIN_NOTEBOOK_DIR: "/zeppelin/notebook"
+      ZEPPELIN_ADDR: "0.0.0.0"  
