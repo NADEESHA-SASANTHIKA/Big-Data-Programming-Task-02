@@ -2,7 +2,7 @@ version: "3"
 
 services:
   zeppelin:
-    image: apache/zeppelin:0.9.0
+    image: apache/zeppelin:0.10.1
     container_name: zeppelin
     restart: always
     user: "0:0"  # Run as root to avoid permission issues
