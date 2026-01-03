@@ -25,6 +25,10 @@ weather_parsed = weather_df.withColumn("date", to_date(col("date"), "d/M/yyyy"))
 # Filter for May (month = 5)
 may_df = weather_parsed.filter(col("month") == 5)
 
+# Correlation Matrix
+correlation_matrix = may_df.corr()
+print(correlation_matrix)
+
 # Select features and label - note the exact column names with spaces
 data = may_df.select(
     col("precipitation_hours (h)").cast("double"),
